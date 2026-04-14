@@ -1,0 +1,26 @@
+Set-Content -Path app/templates/categorias/listar.html -Encoding UTF8 -Value @"
+{% extends "base.html" %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <h2 class="fw-bold text-primary mb-0">Categorias</h2>
+  <a href="{{ url_for('categorias.criar') }}" class="btn btn-primary px-4">+ Nova Categoria</a>
+</div>
+<div class="card">
+  <div class="card-body p-0">
+    <table class="table table-hover mb-0">
+      <thead class="table-light"><tr><th class="px-4 py-3">Nome</th><th class="px-4 py-3">Acoes</th></tr></thead>
+      <tbody>
+        {% for c in categorias %}
+        <tr>
+          <td class="px-4 py-3 fw-semibold">{{ c.nome }}</td>
+          <td class="px-4 py-3"><a href="{{ url_for('categorias.excluir', id=c.id) }}" class="btn btn-sm btn-outline-danger" onclick="return confirm('Excluir?')">Excluir</a></td>
+        </tr>
+        {% else %}
+        <tr><td colspan="2" class="text-center text-muted py-4">Nenhuma categoria cadastrada.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}
+"@

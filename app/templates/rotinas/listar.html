@@ -1,0 +1,37 @@
+Set-Content -Path app/templates/rotinas/listar.html -Encoding UTF8 -Value @"
+{% extends "base.html" %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <h2 class="fw-bold text-primary mb-0">Minhas Rotinas</h2>
+  <a href="{{ url_for('rotinas.criar') }}" class="btn btn-primary px-4">+ Nova Rotina</a>
+</div>
+<div class="row">
+  {% for r in rotinas %}
+  <div class="col-md-6 mb-3">
+    <div class="card h-100">
+      <div class="card-body">
+        <div class="d-flex justify-content-between align-items-start mb-2">
+          <h5 class="card-title fw-bold mb-0">{{ r.titulo }}</h5>
+          {% if r.ativa %}<span class="badge bg-success">Ativa</span>{% else %}<span class="badge bg-secondary">Inativa</span>{% endif %}
+        </div>
+        {% if r.categoria %}<small class="text-muted">{{ r.categoria.nome }}</small>{% endif %}
+        <p class="card-text mt-2 text-muted">{{ r.descricao or '' }}</p>
+        <div class="d-flex gap-2 mt-3">
+          <a href="{{ url_for('rotinas.executar', id=r.id) }}" class="btn btn-sm btn-success {% if not r.ativa %}disabled{% endif %}">Executar Hoje</a>
+          <a href="{{ url_for('rotinas.editar', id=r.id) }}" class="btn btn-sm btn-outline-primary">Editar</a>
+          <a href="{{ url_for('rotinas.excluir', id=r.id) }}" class="btn btn-sm btn-outline-danger" onclick="return confirm('Excluir?')">Excluir</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% else %}
+  <div class="col-12">
+    <div class="card text-center p-5">
+      <p class="text-muted mb-3">Nenhuma rotina cadastrada ainda.</p>
+      <a href="{{ url_for('rotinas.criar') }}" class="btn btn-primary mx-auto" style="width:fit-content">Criar minha primeira rotina</a>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{% endblock %}
+"@
